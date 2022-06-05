@@ -5,14 +5,15 @@ import (
 	"crypto/tls"
 	"encoding/binary"
 	"fmt"
-	"github.com/golang/protobuf/proto"
-	"golang.org/x/net/http2"
-	v1 "grpcdemo/api/v1"
 	"io"
 	"log"
 	"net"
 	"net/http"
 	"strconv"
+
+	"github.com/golang/protobuf/proto"
+	"golang.org/x/net/http2"
+	v1 "grpcdemo/api/v1"
 )
 
 type GrpcClient struct {

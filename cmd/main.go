@@ -1,10 +1,11 @@
 package main
 
 import (
+	"net"
+
 	"google.golang.org/grpc"
 	v1 "grpcdemo/api/v1"
 	"grpcdemo/server"
-	"net"
 )
 
 func main() {
