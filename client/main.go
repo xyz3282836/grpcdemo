@@ -10,10 +10,11 @@ import (
 	"net"
 	"net/http"
 	"strconv"
-
-	"github.com/golang/protobuf/proto"
-	"golang.org/x/net/http2"
 	v1 "grpcdemo/api/v1"
+
+	"golang.org/x/net/http2"
+	"github.com/gogo/protobuf/proto"
+	// "google.golang.org/protobuf/proto"
 )
 
 type GrpcClient struct {
@@ -63,7 +64,9 @@ func main() {
 	req.Header.Set("content-type", "application/grpc+proto")
 
 	resp, _ := c.Do(req)
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 
 	pb, _ = io.ReadAll(resp.Body)
 	if status := resp.Header.Get("grpc-status"); status != "" {
@@ -73,6 +76,7 @@ func main() {
 			return
 		}
 		err = fmt.Errorf("status %d err is %s", c, resp.Header.Get("grpc-message"))
+		log.Fatalln(err)
 		return
 	}
 	out := &v1.HelloReply{}
