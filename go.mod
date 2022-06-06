@@ -12,6 +12,6 @@ require (
 	github.com/gogo/protobuf v1.3.2
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	golang.org/x/text v0.3.7 // indirect
-	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
-	google.golang.org/protobuf v1.27.1 // indirect
+	google.golang.org/genproto v0.0.0-20220602131408-e326c6e8e9c8 // indirect
+	google.golang.org/protobuf v1.28.0 // indirect
 )

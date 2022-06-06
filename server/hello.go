@@ -17,3 +17,13 @@ func (s *HelloServer) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.He
 
 	return out, nil
 }
+
+func (s *HelloServer) GetID(ctx context.Context, in *v1.GetIdReq) (*v1.GetIDsResp, error) {
+	out := &v1.GetIDsResp{}
+	startId := 10000000
+	for i := startId; i < (startId + 50000); i++ {
+		out.Ids = append(out.Ids, int64(i))
+	}
+
+	return out, nil
+}

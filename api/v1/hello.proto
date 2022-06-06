@@ -8,6 +8,8 @@ package grpcdemo.v1;
 service Hello {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
+
+  rpc GetID (GetIdReq) returns (GetIDsResp) {}
 }
 
 // The request message containing the user's name.
@@ -18,4 +20,12 @@ message HelloRequest {
 // The response message containing the greetings
 message HelloReply {
   string message = 1;
+}
+
+message GetIdReq {
+
+}
+
+message GetIDsResp {
+  repeated int64 ids = 1;
 }

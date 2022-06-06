@@ -5,15 +5,15 @@ import (
 	"crypto/tls"
 	"encoding/binary"
 	"fmt"
+	v1 "grpcdemo/api/v1"
 	"io"
 	"log"
 	"net"
 	"net/http"
 	"strconv"
-	v1 "grpcdemo/api/v1"
 
-	"golang.org/x/net/http2"
 	"github.com/gogo/protobuf/proto"
+	"golang.org/x/net/http2"
 	// "google.golang.org/protobuf/proto"
 )
 
@@ -38,11 +38,12 @@ var plainTextH2Transport = &http2.Transport{
 func main() {
 	c := http.Client{Transport: plainTextH2Transport}
 
-	api := "http://127.0.0.1:9000/grpcdemo.v1.Hello/SayHello"
-	in := &v1.HelloRequest{Name: "a"}
-	for i := 0; i < 1; i++ {
-		in.Name += "b"
-	}
+	api := "http://127.0.0.1:9000/grpcdemo.v1.Hello/GetID"
+	in := &v1.GetIdReq{}
+	// in := &v1.HelloRequest{Name: "a"}
+	// for i := 0; i < 1; i++ {
+	// 	in.Name += "b"
+	// }
 
 	// 正式代码需要处理错误
 	pb, _ := proto.Marshal(in)
@@ -84,10 +85,10 @@ func main() {
 	//log.Printf("out data is %#b", pb)
 	log.Printf("out data len is %#b %#x %d", pb[:5], pb[:5], binary.BigEndian.Uint32(pb[1:5]))
 
-	log.Printf("out pb is %#x err is %v", pb, err)
+	// log.Printf("out pb is %#x err is %v", pb, err)
+	log.Printf("err is %v", err)
 	log.Printf("pb 6-7 %#b %d", pb[5:7], binary.BigEndian.Uint16(pb[5:7]))
 
-	rr := []byte("\r\n")
-	log.Printf("rr is is %#b", rr)
+	log.Printf("%s", string([]byte{0b1010}))
 
 }
