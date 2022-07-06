@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package = "api/v1";
+
+package grpcdemo.v1;
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+message TestInfo {
+  string name = 1 [(gogoproto.jsontag) = 'name'];
+  DemoInfo demo_info = 2 [(gogoproto.jsontag) = 'demo_info'];
+
+  message DemoInfo {
+      string name = 1 [(gogoproto.jsontag) = 'name'];
+      int64 age = 2 [(gogoproto.jsontag) = 'age'];
+      repeated GroupInfo groups = 3 [(gogoproto.jsontag) = 'groups'];
+
+      message GroupInfo{
+        string title = 1 [(gogoproto.jsontag) = 'title'];
+      }
+  }
+
+}

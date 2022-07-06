@@ -3,10 +3,11 @@ module grpcdemo
 go 1.17
 
 require (
-	github.com/golang/protobuf v1.5.2
 	golang.org/x/net v0.0.0-20220531201128-c960675eff93
 	google.golang.org/grpc v1.47.0
 )
+
+require github.com/golang/protobuf v1.5.2 // indirect
 
 require (
 	github.com/gogo/protobuf v1.3.2
