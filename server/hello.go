@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"grpcdemo/api/v1"
+	"math"
 )
 
 type HelloServer struct {
@@ -14,6 +15,7 @@ type HelloServer struct {
 func (s *HelloServer) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
 	out := &v1.HelloReply{}
 	out.Message = "Hello " + in.Name
+	out.Num = int64(math.MaxInt32 + 1)
 
 	return out, nil
 }

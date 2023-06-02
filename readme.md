@@ -3,6 +3,9 @@
 `protoc --gofast_out=plugins=grpc:/Users/zhou/go/src/grpcdemo/ api/v1/hello.proto`
 `protoc --gogofast_out=plugins=grpc:/Users/zhou/go/src/grpcdemo/ api/v1/hello.proto`
 
+## client pb
+`protoc --gofast_out=plugins=grpc:/Users/zhou/go/src/grpcdemo/grpcclient/protodiff grpcclient/protodiff/api/v1/hello.proto`
+
 # 启动grpc服务
 启动grpc服务
 `go run cmd/main.go`
@@ -13,4 +16,8 @@
 
 ## 客户端请求
 模拟grpc请求，以http的方式
-`go run client/main.go`
+`go run httpclient/main.go`
+`go run grpcclient/normal/main.go`
+
+### client proto different from server proto
+`go run grpcclient/protodiff/main.go`
