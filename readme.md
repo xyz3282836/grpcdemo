@@ -17,6 +17,7 @@
 ## 客户端请求
 模拟grpc请求，以http的方式
 `go run httpclient/main.go`
+grpc客户端请求
 `go run grpcclient/normal/main.go`
 
 ### client proto different from server proto
