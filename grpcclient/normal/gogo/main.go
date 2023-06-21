@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
-	v1 "grpcdemo/api/v1"
+	v1 "grpcdemo/api/v1/gogo"
 	"log"
 	"time"
 
-	"github.com/golang/protobuf/ptypes"
+	"github.com/gogo/protobuf/types"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -40,7 +40,7 @@ func TestGetView(conn *grpc.ClientConn) {
 	client := v1.NewHelloClient(conn)
 
 	data := &v1.FansMedalOptions{UpMid: time.Now().Unix()}
-	anydata, _ := ptypes.MarshalAny(data)
+	anydata, _ := types.MarshalAny(data)
 
 	req := &v1.GetViewReq{Name: "zhou", Views: []*v1.UserViewItem{{View: v1.UserViewEnum_BASE_INFO_VIEW, Options: anydata}}}
 	ret, err := client.GetView(context.TODO(), req)

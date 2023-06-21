@@ -1,13 +1,16 @@
 # 生成proto
 有任何改动执行，绝对路径，换成自己机器的
-`protoc --gofast_out=plugins=grpc:/Users/zhou/go/src/grpcdemo/ api/v1/hello.proto`
-`protoc --gogofast_out=plugins=grpc:/Users/zhou/go/src/grpcdemo/ api/v1/hello.proto`
+## go
+protoc --go_out=/Users/zhou/go/src/grpcdemo/ --go-grpc_out=/Users/zhou/go/src/grpcdemo/ api/v1/hello.proto
 
-## client pb
-`protoc --gofast_out=plugins=grpc:/Users/zhou/go/src/grpcdemo/grpcclient/protodiff grpcclient/protodiff/api/v1/hello.proto`
+## gogo
+protoc --gofast_out=plugins=grpc,Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types:/Users/zhou/go/src/grpcdemo/ api/v1/gogo/hello.proto
+protoc --gogofast_out=plugins=grpc,Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types:/Users/zhou/go/src/grpcdemo/ api/v1/gogo/hello.proto
+
 
 # 启动grpc服务
 启动grpc服务
+`go run cmd/gogo/main.go`
 `go run cmd/main.go`
 
 ## 查看grpc服务
@@ -18,7 +21,5 @@
 模拟grpc请求，以http的方式
 `go run httpclient/main.go`
 grpc客户端请求
+`go run grpcclient/normal/gogo/main.go`
 `go run grpcclient/normal/main.go`
-
-### client proto different from server proto
-`go run grpcclient/protodiff/main.go`

@@ -2,10 +2,10 @@ package server
 
 import (
 	"context"
-	v1 "grpcdemo/api/v1"
+	v1 "grpcdemo/api/v1/gogo"
 	"math"
 
-	"github.com/golang/protobuf/ptypes"
+	"github.com/gogo/protobuf/types"
 )
 
 type HelloServer struct {
@@ -37,7 +37,7 @@ func (s *HelloServer) GetView(ctx context.Context, in *v1.GetViewReq) (*v1.GetVi
 	out.Name = in.GetName()
 	req := in.GetViews()
 	one := &v1.FansMedalOptions{}
-	_ = ptypes.UnmarshalAny(req[0].GetOptions(), one)
+	types.UnmarshalAny(req[0].GetOptions(), one)
 	out.Num = one.GetUpMid()
 	return out, nil
 }
