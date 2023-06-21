@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	v1 "grpcdemo/api/v1/gogo"
 	"log"
 	"time"
@@ -43,10 +44,14 @@ func TestGetView(conn *grpc.ClientConn) {
 	anydata, _ := types.MarshalAny(data)
 
 	req := &v1.GetViewReq{Name: "zhou", Views: []*v1.UserViewItem{{View: v1.UserViewEnum_BASE_INFO_VIEW, Options: anydata}}}
+
+	reqstr, _ := json.Marshal(req)
+
 	ret, err := client.GetView(context.TODO(), req)
 	if err != nil {
-		log.Printf("client grpc fail %v", err)
+		log.Printf("client grpc fail %v \n", err)
 		return
 	}
+	log.Printf("req is %s\n", reqstr)
 	log.Printf("ret is %v", ret)
 }
