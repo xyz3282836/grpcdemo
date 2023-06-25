@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	v1 "grpcdemo/api/v1/gogo"
 	"log"
-	"time"
 
 	"github.com/gogo/protobuf/types"
 	"google.golang.org/grpc"
@@ -40,7 +39,7 @@ func TestSayHello(conn *grpc.ClientConn) {
 func TestGetView(conn *grpc.ClientConn) {
 	client := v1.NewHelloClient(conn)
 
-	data := &v1.FansMedalOptions{UpMid: time.Now().Unix()}
+	data := &v1.FansMedalOptions{UpMid: int64(112233)}
 	anydata, _ := types.MarshalAny(data)
 
 	req := &v1.GetViewReq{Name: "zhou", Views: []*v1.UserViewItem{{View: v1.UserViewEnum_BASE_INFO_VIEW, Options: anydata}}}

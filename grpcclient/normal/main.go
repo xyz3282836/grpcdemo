@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	v1 "grpcdemo/api/v1"
 	"log"
-	"time"
 
 	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
@@ -39,14 +39,18 @@ func TestSayHello(conn *grpc.ClientConn) {
 func TestGetView(conn *grpc.ClientConn) {
 	client := v1.NewHelloClient(conn)
 
-	data := &v1.FansMedalOptions{UpMid: time.Now().Unix()}
+	data := &v1.FansMedalOptions{UpMid: int64(112233)}
 	anydata, _ := ptypes.MarshalAny(data)
 
 	req := &v1.GetViewReq{Name: "zhou", Views: []*v1.UserViewItem{{View: v1.UserViewEnum_BASE_INFO_VIEW, Options: anydata}}}
+
+	reqstr, _ := json.Marshal(req)
+
 	ret, err := client.GetView(context.TODO(), req)
 	if err != nil {
 		log.Printf("client grpc fail %v", err)
 		return
 	}
+	log.Printf("req is %s\n", reqstr)
 	log.Printf("ret is %v", ret)
 }
