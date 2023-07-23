@@ -5,17 +5,25 @@ import (
 	"encoding/json"
 	"fmt"
 	v1 "grpcdemo/api/v1"
+	"io"
 	"log"
 	"time"
 
 	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/keepalive"
 )
+
+var kacp = keepalive.ClientParameters{
+	Time:                10 * time.Second, // send pings every 10 seconds if there is no activity
+	Timeout:             time.Second,      // wait 1 second for ping ack before considering the connection dead
+	PermitWithoutStream: true,             // send pings even without active streams
+}
 
 func main() {
 	var opts []grpc.DialOption
-	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithKeepaliveParams(kacp))
 	conn, err := grpc.Dial("127.0.0.1:9000", opts...)
 	if err != nil {
 		log.Printf("grpc.Dial fail %v", err)
@@ -23,8 +31,10 @@ func main() {
 	}
 	defer conn.Close()
 
-	TestSayHello(conn)
-	TestGetView(conn)
+	//TestSayHello(conn)
+	//TestGetView(conn)
+	TestStream(conn)
+	select {}
 }
 
 func TestSayHello(conn *grpc.ClientConn) {
@@ -60,41 +70,47 @@ func TestGetView(conn *grpc.ClientConn) {
 func TestStream(conn *grpc.ClientConn) {
 	client := v1.NewHelloClient(conn)
 
-	req := &v1.GetStreamReq{Name: fmt.Sprintf("req time %d", time.Now().Unix()),}}
+	req := &v1.GetStreamReq{Name: fmt.Sprintf("req time %d", time.Now().Unix())}
 
 	cli, err := client.GetStream(context.TODO(), req)
-	retry :=true
+	if err != nil {
+		log.Printf("first init cli err %v \n", err)
+		return
+	}
+	retry := true
 	var tryTime int
-	for tryTime<5 && retry{
+	var recvErr error
+	for tryTime < 5 && retry {
 		tryTime++
-		for{
-			ret,recvErr = cli.Recv()
-			if recvErr != nil{
+		for {
+			ret := &v1.GetStreamResp{}
+			ret, recvErr = cli.Recv()
+			if recvErr != nil {
 				if recvErr == io.EOF {
 					recvErr = nil
 					break
 				}
-				log.Printf("recv err %v \n", recvErr)
+				log.Printf("recv err %v", recvErr)
 				break
 			}
-			log.Printf("recv is %s \n", ret.GetResult())
-
+			log.Printf("recv is %s", ret.GetResult())
 		}
-		if recvErr != nil{
+		if recvErr != nil {
 			retry = true
 			cli, err = client.GetStream(context.TODO(), req)
-			if err != nil{
-				log.Printf("cli err %v \n", err)
-				return err
+			if err != nil {
+				log.Printf("cli err %v", err)
+				return
 			}
-		}else{
+			log.Printf("try time %d", tryTime)
+			time.Sleep(time.Second)
+		} else {
 			retry = false
 		}
 	}
-
 	if retry != false {
 		log.Printf("final err %v", recvErr)
-		return recvErr
+		return
 	}
-	return nil
+	return
 }

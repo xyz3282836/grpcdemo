@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/ptypes"
-	"github.com/pingcap/log"
 )
 
 type HelloServer struct {
@@ -48,11 +47,14 @@ func (s *HelloServer) GetView(ctx context.Context, in *v1.GetViewReq) (*v1.GetVi
 
 func (s *HelloServer) GetStream(req *v1.GetStreamReq, srv v1.Hello_GetStreamServer) (err error) {
 	reqName := req.GetName()
-	for i := 0; i < 5; i++ {
+	for i := 1; i < 11; i++ {
+		//if i == 4 {
+		//	return fmt.Errorf("build err")
+		//}
 		err = srv.Send(&v1.GetStreamResp{
-			Result: fmt.Sprintf("stream return no.%d %s and resp time %d", i, time.Now().Unix(), reqName),
+			Result: fmt.Sprintf("stream return no.%d %d and resp time %s", i, time.Now().Unix(), reqName),
 		})
-		time.Sleep(time.Second)
+		time.Sleep(2 * time.Second)
 		if err != nil {
 			log.Printf("stream err %v", err)
 			return
