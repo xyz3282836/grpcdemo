@@ -1,34 +1,49 @@
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: wrote SETTINGS len=0
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: read SETTINGS len=6, settings: MAX_FRAME_SIZE=16384
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: wrote SETTINGS flags=ACK len=0
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: read SETTINGS flags=ACK len=0
-
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: wrote HEADERS flags=END_HEADERS stream=1 len=96
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: wrote DATA flags=END_STREAM stream=1 len=21 data="\x00\x00\x00\x00\x10\n\x0ekeepalive demo"
-
-
+SETTINGS
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: wrote SETTINGS len=0
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: read SETTINGS len=6, settings: MAX_FRAME_SIZE=16384
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: wrote SETTINGS flags=ACK len=0
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: read SETTINGS flags=ACK len=0
+HEADERS
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: wrote HEADERS flags=END_HEADERS stream=1 len=96
 
 
 
 
 
 
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: read WINDOW_UPDATE len=4 (conn) incr=21
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: read PING len=8 ping="\x02\x04\x10\x10\t\x0e\a\a"
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: wrote PING flags=ACK len=8 ping="\x02\x04\x10\x10\t\x0e\a\a"
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: read HEADERS flags=END_HEADERS stream=1 len=14
-2023/07/22 01:23:36 http2: decoded hpack field header field ":status" = "200"
-2023/07/22 01:23:36 http2: decoded hpack field header field "content-type" = "application/grpc"
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: read DATA stream=1 len=21 data="\x00\x00\x00\x00\x10\n\x0ekeepalive demo"
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: read HEADERS flags=END_STREAM|END_HEADERS stream=1 len=24
-2023/07/22 01:23:36 http2: decoded hpack field header field "grpc-status" = "0"
-2023/07/22 01:23:36 http2: decoded hpack field header field "grpc-message" = ""
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: wrote WINDOW_UPDATE len=4 (conn) incr=21
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: wrote PING len=8 ping="\x02\x04\x10\x10\t\x0e\a\a"
-RPC response: message:"keepalive demo"
-2023/07/22 01:23:36 http2: Framer 0xc0001f8000: read PING flags=ACK len=8 ping="\x02\x04\x10\x10\t\x0e\a\a"
-2023/07/22 01:23:46 http2: Framer 0xc0001f8000: wrote PING len=8 ping="\x00\x00\x00\x00\x00\x00\x00\x00"
-2023/07/22 01:23:46 http2: Framer 0xc0001f8000: read PING flags=ACK len=8 ping="\x00\x00\x00\x00\x00\x00\x00\x00"
 
-2023/07/22 01:23:56 http2: Framer 0xc00017a000: wrote GOAWAY len=16 LastStreamID=2147483647 ErrCode=NO_ERROR Debug="max_idle"
-2023/07/22 01:23:56 http2: Framer 0xc00017a000: wrote PING len=8 ping="\x01\x06\x01\b\x00\x03\x03\t"
+
+
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: read WINDOW_UPDATE len=4 (conn) incr=21
+DATA
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: wrote DATA flags=END_STREAM stream=1 len=21 data="\x00\x00\x00\x00\x10\n\x0ekeepalive demo"
+
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: read PING len=8 ping="\x02\x04\x10\x10\t\x0e\a\a"
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: wrote PING flags=ACK len=8 ping="\x02\x04\x10\x10\t\x0e\a\a"
+
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: read HEADERS flags=END_HEADERS stream=1 len=14
+2023/07/22 23:00:50 http2: decoded hpack field header field ":status" = "200"
+2023/07/22 23:00:50 http2: decoded hpack field header field "content-type" = "application/grpc"
+2023/07/22 23:00:50 http2: decoded hpack field header field "grpc-status" = "0"
+2023/07/22 23:00:50 http2: decoded hpack field header field "grpc-message" = ""
+
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: read DATA stream=1 len=21 data="\x00\x00\x00\x00\x10\n\x0ekeepalive demo"
+
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: read HEADERS flags=END_STREAM|END_HEADERS stream=1 len=24
+WINDOW_UPDATE
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: wrote WINDOW_UPDATE len=4 (conn) incr=21
+PING-1
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: wrote PING len=8 ping="\x02\x04\x10\x10\t\x0e\a\a"
+2023/07/22 23:00:50 http2: Framer 0xc00021c000: read PING flags=ACK len=8 ping="\x02\x04\x10\x10\t\x0e\a\a"
+PING-2
+2023/07/22 23:01:00 http2: Framer 0xc00021c000: wrote PING len=8 ping="\x00\x00\x00\x00\x00\x00\x00\x00"
+2023/07/22 23:01:00 http2: Framer 0xc00021c000: read PING flags=ACK len=8 ping="\x00\x00\x00\x00\x00\x00\x00\x00"
+PING-3
+2023/07/22 23:01:10 http2: Framer 0xc00021c000: wrote PING len=8 ping="\x00\x00\x00\x00\x00\x00\x00\x00"
+2023/07/22 23:01:10 http2: Framer 0xc00021c000: read PING flags=ACK len=8 ping="\x00\x00\x00\x00\x00\x00\x00\x00"
+PING-4
+2023/07/22 23:01:20 http2: Framer 0xc00021c000: wrote PING len=8 ping="\x00\x00\x00\x00\x00\x00\x00\x00"
+2023/07/22 23:01:20 http2: Framer 0xc00021c000: read PING flags=ACK len=8 ping="\x00\x00\x00\x00\x00\x00\x00\x00"
+
+2023/07/22 23:01:20 http2: Framer 0xc00021c000: read GOAWAY len=22 LastStreamID=1 ErrCode=ENHANCE_YOUR_CALM Debug="too_many_pings"
+2023/07/22 23:01:20 ERROR: [transport] Client received GoAway with error code ENHANCE_YOUR_CALM and debug data equal to ASCII "too_many_pings".
