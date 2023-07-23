@@ -3,8 +3,10 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	v1 "grpcdemo/api/v1"
 	"log"
+	"time"
 
 	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
@@ -53,4 +55,46 @@ func TestGetView(conn *grpc.ClientConn) {
 	}
 	log.Printf("req is %s\n", reqstr)
 	log.Printf("ret is %v", ret)
+}
+
+func TestStream(conn *grpc.ClientConn) {
+	client := v1.NewHelloClient(conn)
+
+	req := &v1.GetStreamReq{Name: fmt.Sprintf("req time %d", time.Now().Unix()),}}
+
+	cli, err := client.GetStream(context.TODO(), req)
+	retry :=true
+	var tryTime int
+	for tryTime<5 && retry{
+		tryTime++
+		for{
+			ret,recvErr = cli.Recv()
+			if recvErr != nil{
+				if recvErr == io.EOF {
+					recvErr = nil
+					break
+				}
+				log.Printf("recv err %v \n", recvErr)
+				break
+			}
+			log.Printf("recv is %s \n", ret.GetResult())
+
+		}
+		if recvErr != nil{
+			retry = true
+			cli, err = client.GetStream(context.TODO(), req)
+			if err != nil{
+				log.Printf("cli err %v \n", err)
+				return err
+			}
+		}else{
+			retry = false
+		}
+	}
+
+	if retry != false {
+		log.Printf("final err %v", recvErr)
+		return recvErr
+	}
+	return nil
 }

@@ -10,6 +10,8 @@ service Hello {
   rpc SayHello (HelloRequest) returns (HelloReply) {}
 
   rpc GetID (GetIdReq) returns (GetIDsResp) {}
+
+  rpc GetStream(GetStreamReq) returns (stream GetStreamResp){}
 }
 
 // The request message containing the user's name.
@@ -29,4 +31,11 @@ message GetIdReq {
 
 message GetIDsResp {
   repeated int64 ids = 1;
+}
+
+message GetStreamReq{
+  string name = 1;
+}
+message GetStreamResp{
+  string result = 1;
 }

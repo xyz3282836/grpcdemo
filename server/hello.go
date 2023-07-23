@@ -2,10 +2,14 @@ package server
 
 import (
 	"context"
+	"fmt"
 	v1 "grpcdemo/api/v1"
+	"log"
 	"math"
+	"time"
 
 	"github.com/golang/protobuf/ptypes"
+	"github.com/pingcap/log"
 )
 
 type HelloServer struct {
@@ -40,4 +44,19 @@ func (s *HelloServer) GetView(ctx context.Context, in *v1.GetViewReq) (*v1.GetVi
 	_ = ptypes.UnmarshalAny(req[0].GetOptions(), one)
 	out.Num = one.GetUpMid()
 	return out, nil
+}
+
+func (s *HelloServer) GetStream(req *v1.GetStreamReq, srv v1.Hello_GetStreamServer) (err error) {
+	reqName := req.GetName()
+	for i := 0; i < 5; i++ {
+		err = srv.Send(&v1.GetStreamResp{
+			Result: fmt.Sprintf("stream return no.%d %s and resp time %d", i, time.Now().Unix(), reqName),
+		})
+		time.Sleep(time.Second)
+		if err != nil {
+			log.Printf("stream err %v", err)
+			return
+		}
+	}
+	return
 }

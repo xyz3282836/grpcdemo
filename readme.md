@@ -2,6 +2,8 @@
 有任何改动执行，绝对路径，换成自己机器的
 ## go
 protoc --go_out=/Users/zhou/go/src/grpcdemo/ --go-grpc_out=/Users/zhou/go/src/grpcdemo/ api/v1/hello.proto
+### client diffproto
+protoc --go_out=/Users/zhou/go/src/grpcdemo/grpcclient/protodiff --go-grpc_out=/Users/zhou/go/src/grpcdemo/grpcclient/protodiff grpcclient/protodiff/api/v1/hello.proto
 
 ## gogo
 protoc --gofast_out=plugins=grpc,Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types:/Users/zhou/go/src/grpcdemo/ api/v1/gogo/hello.proto

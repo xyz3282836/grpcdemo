@@ -14,6 +14,8 @@ service Hello {
   rpc GetID (GetIdReq) returns (GetIDsResp) {}
 
   rpc GetView(GetViewReq) returns (GetViewResp) {}
+
+  rpc GetStream(GetStreamReq) returns (stream GetStreamResp){}
 }
 
 // The request message containing the user's name.
@@ -60,4 +62,11 @@ message GetIDsResp {
 message GetViewResp{
   string name = 1;
   int64 num = 2;
+}
+
+message GetStreamReq{
+  string name = 1;
+}
+message GetStreamResp{
+  string result = 1;
 }

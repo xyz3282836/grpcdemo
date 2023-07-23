@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.9.2
-// source: api/v1/hello.proto
+// source: grpcclient/protodiff/api/v1/hello.proto
 
 package v1
 
@@ -25,7 +25,6 @@ type HelloClient interface {
 	// Sends a greeting
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
 	GetID(ctx context.Context, in *GetIdReq, opts ...grpc.CallOption) (*GetIDsResp, error)
-	GetView(ctx context.Context, in *GetViewReq, opts ...grpc.CallOption) (*GetViewResp, error)
 	GetStream(ctx context.Context, in *GetStreamReq, opts ...grpc.CallOption) (Hello_GetStreamClient, error)
 }
 
@@ -49,15 +48,6 @@ func (c *helloClient) SayHello(ctx context.Context, in *HelloRequest, opts ...gr
 func (c *helloClient) GetID(ctx context.Context, in *GetIdReq, opts ...grpc.CallOption) (*GetIDsResp, error) {
 	out := new(GetIDsResp)
 	err := c.cc.Invoke(ctx, "/grpcdemo.v1.Hello/GetID", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *helloClient) GetView(ctx context.Context, in *GetViewReq, opts ...grpc.CallOption) (*GetViewResp, error) {
-	out := new(GetViewResp)
-	err := c.cc.Invoke(ctx, "/grpcdemo.v1.Hello/GetView", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +93,6 @@ type HelloServer interface {
 	// Sends a greeting
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
 	GetID(context.Context, *GetIdReq) (*GetIDsResp, error)
-	GetView(context.Context, *GetViewReq) (*GetViewResp, error)
 	GetStream(*GetStreamReq, Hello_GetStreamServer) error
 	mustEmbedUnimplementedHelloServer()
 }
@@ -117,9 +106,6 @@ func (UnimplementedHelloServer) SayHello(context.Context, *HelloRequest) (*Hello
 }
 func (UnimplementedHelloServer) GetID(context.Context, *GetIdReq) (*GetIDsResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetID not implemented")
-}
-func (UnimplementedHelloServer) GetView(context.Context, *GetViewReq) (*GetViewResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetView not implemented")
 }
 func (UnimplementedHelloServer) GetStream(*GetStreamReq, Hello_GetStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetStream not implemented")
@@ -173,24 +159,6 @@ func _Hello_GetID_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Hello_GetView_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetViewReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(HelloServer).GetView(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/grpcdemo.v1.Hello/GetView",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HelloServer).GetView(ctx, req.(*GetViewReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Hello_GetStream_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(GetStreamReq)
 	if err := stream.RecvMsg(m); err != nil {
@@ -227,10 +195,6 @@ var Hello_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "GetID",
 			Handler:    _Hello_GetID_Handler,
 		},
-		{
-			MethodName: "GetView",
-			Handler:    _Hello_GetView_Handler,
-		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
@@ -239,5 +203,5 @@ var Hello_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "api/v1/hello.proto",
+	Metadata: "grpcclient/protodiff/api/v1/hello.proto",
 }
