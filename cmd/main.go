@@ -15,6 +15,7 @@ import (
 	"google.golang.org/grpc/health"
 	healthgrpc "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/keepalive"
+	"google.golang.org/grpc/reflection"
 )
 
 var kasp = keepalive.ServerParameters{
@@ -34,6 +35,9 @@ func main() {
 	v1.RegisterHelloServer(grpcServer, &server.HelloServer{})
 	health := health.NewServer()
 	healthgrpc.RegisterHealthServer(grpcServer, health)
+
+	// register reflect
+	reflection.Register(grpcServer)
 
 	// 启动
 	go grpcServer.Serve(ln)

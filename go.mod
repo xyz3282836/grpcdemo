@@ -9,7 +9,11 @@ require (
 	google.golang.org/grpc/examples v0.0.0-20230721002912-d7f45cdf9ae7
 )
 
-require google.golang.org/genproto/googleapis/rpc v0.0.0-20230711160842-782d3b101e98 // indirect
+require (
+	github.com/bufbuild/protocompile v0.4.0 // indirect
+	github.com/jhump/protoreflect v1.15.1 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230711160842-782d3b101e98 // indirect
+)
 
 require (
 	github.com/gogo/protobuf v1.3.2

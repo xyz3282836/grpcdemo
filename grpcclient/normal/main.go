@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/ptypes"
+	grpcrf "github.com/jhump/protoreflect/grpcreflect"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/keepalive"
@@ -33,8 +34,9 @@ func main() {
 
 	//TestSayHello(conn)
 	//TestGetView(conn)
-	TestStream(conn)
-	select {}
+	// TestStream(conn)
+	TestGetRelectApiList(conn)
+	// select {}
 }
 
 func TestSayHello(conn *grpc.ClientConn) {
@@ -67,6 +69,22 @@ func TestGetView(conn *grpc.ClientConn) {
 	log.Printf("ret is %v", ret)
 }
 
+func TestGetRelectApiList(conn *grpc.ClientConn) {
+	c := grpcrf.NewClientAuto(context.TODO(), conn)
+	slist, err := c.ListServices()
+	if err != nil {
+		log.Printf("err %v", err)
+		return
+	}
+	log.Printf("api len %d", len(slist))
+	for _, e := range slist {
+		d, _ := c.ResolveService(e)
+		for _, ee := range d.GetMethods() {
+			log.Printf("api is /%s/%s", e, ee.GetName())
+		}
+	}
+}
+
 func TestStream(conn *grpc.ClientConn) {
 	client := v1.NewHelloClient(conn)
 
@@ -74,7 +92,7 @@ func TestStream(conn *grpc.ClientConn) {
 
 	cli, err := client.GetStream(context.TODO(), req)
 	if err != nil {
-		log.Printf("first init cli err %v \n", err)
+		log.Printf("first init cli err %v", err)
 		return
 	}
 	retry := true
