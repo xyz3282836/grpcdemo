@@ -14,6 +14,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/keepalive"
+
+	gm "google.golang.org/grpc/metadata"
 )
 
 var kacp = keepalive.ClientParameters{
@@ -22,9 +24,25 @@ var kacp = keepalive.ClientParameters{
 	PermitWithoutStream: false,            // send pings even without active streams
 }
 
+type myClientInterceptor struct{}
+
+func (i *myClientInterceptor) UnaryClientInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+	// 调用 gRPC 方法之前的处理逻辑
+	err := invoker(ctx, method, req, reply, cc, opts...)
+
+	// 获取 trailer 元数据
+	trailer, ok := gm.FromOutgoingContext(ctx)
+	fmt.Println("Trailer:ok", ok)
+	fmt.Println("Trailer:", trailer.Get("ccppuu"))
+
+	return err
+}
+
 func main() {
 	var opts []grpc.DialOption
+	// mci:=&myClientInterceptor{}
 	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithKeepaliveParams(kacp))
+
 	conn, err := grpc.Dial("127.0.0.1:9000", opts...)
 	if err != nil {
 		log.Printf("grpc.Dial fail %v", err)
@@ -32,21 +50,26 @@ func main() {
 	}
 	defer conn.Close()
 
-	//TestSayHello(conn)
+	TestSayHello(conn)
 	//TestGetView(conn)
 	// TestStream(conn)
-	TestGetRelectApiList(conn)
+	// TestGetRelectApiList(conn)
 	// select {}
 }
 
 func TestSayHello(conn *grpc.ClientConn) {
 	client := v1.NewHelloClient(conn)
-
-	ret, err := client.SayHello(context.TODO(), &v1.HelloRequest{Name: "zhou"})
+	ctx := context.Background()
+	ret, err := client.SayHello(ctx, &v1.HelloRequest{Name: "zhou"})
 	if err != nil {
 		log.Printf("client grpc fail %v", err)
 		return
 	}
+
+	trailer := gm.Pairs()
+	grpc.SendHeader(nil, trailer)
+	fmt.Println("Trailer:", trailer)
+
 	log.Printf("ret is %v", ret)
 }
 
