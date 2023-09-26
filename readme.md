@@ -43,3 +43,10 @@ grpc客户端请求
 ## 扫描grpc server api list
 
 `go run main.go -ip 10.150.255.153`
+
+## grpc unary header trailer
+
+```sh
+go run cmd/main.go
+go run grpcclient/normal/main.go
+```

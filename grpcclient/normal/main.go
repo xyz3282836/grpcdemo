@@ -60,17 +60,14 @@ func main() {
 func TestSayHello(conn *grpc.ClientConn) {
 	client := v1.NewHelloClient(conn)
 	ctx := context.Background()
-	ret, err := client.SayHello(ctx, &v1.HelloRequest{Name: "zhou"})
+	var header, trailer gm.MD
+	ret, err := client.SayHello(ctx, &v1.HelloRequest{Name: "zhou"}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		log.Printf("client grpc fail %v", err)
 		return
 	}
 
-	trailer := gm.Pairs()
-	grpc.SendHeader(nil, trailer)
-	fmt.Println("Trailer:", trailer)
-
-	log.Printf("ret is %v", ret)
+	log.Printf("ret is %v header is %v trailer is %v", ret, header, trailer)
 }
 
 func TestGetView(conn *grpc.ClientConn) {

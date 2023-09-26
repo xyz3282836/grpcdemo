@@ -25,6 +25,7 @@ func (s *HelloServer) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.He
 	out.Num = int64(math.MaxInt32 + 1)
 	out.Num = int64(0)
 	grpc.SetTrailer(ctx, gm.Pairs([]string{"ccppuu", "lalal"}...))
+	grpc.SetHeader(ctx, gm.Pairs([]string{"color", "red"}...))
 	return out, nil
 }
 
