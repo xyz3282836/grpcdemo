@@ -60,14 +60,21 @@ func main() {
 func TestSayHello(conn *grpc.ClientConn) {
 	client := v1.NewHelloClient(conn)
 	ctx := context.Background()
+	// client 发送metadata
+	ctx = gm.AppendToOutgoingContext(ctx, "client-md", "hello")
+	// ctx = gm.NewOutgoingContext(ctx, gm.Pairs("client-md", "hello"))
+
+	// client 读取server发送的header和trailer
 	var header, trailer gm.MD
 	ret, err := client.SayHello(ctx, &v1.HelloRequest{Name: "zhou"}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		log.Printf("client grpc fail %v", err)
 		return
 	}
+	// client 查看自己发送给server metadata
+	muoutmd, ok := gm.FromOutgoingContext(ctx)
 
-	log.Printf("ret is %v header is %v trailer is %v", ret, header, trailer)
+	log.Printf("ret is %v header is %v trailer is %v endmd is %v ok is %v", ret, header, trailer, muoutmd, ok)
 }
 
 func TestGetView(conn *grpc.ClientConn) {

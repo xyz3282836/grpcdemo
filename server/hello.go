@@ -24,12 +24,17 @@ func (s *HelloServer) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.He
 	out.Message = "Hello " + in.Name
 	out.Num = int64(math.MaxInt32 + 1)
 	out.Num = int64(0)
+	// server 发送给client的header和trailer
 	grpc.SetTrailer(ctx, gm.Pairs("ccppuu", "99"))
 	grpc.SetTrailer(ctx, gm.Pairs("mem", "4"))
 	grpc.SetHeader(ctx, gm.Pairs("color", "red"))
 	// 只能调用一次，在这个之下再去set header就无效了
 	grpc.SendHeader(ctx, gm.Pairs("final", "send"))
 	grpc.SetHeader(ctx, gm.Pairs("cluster", "sh"))
+	// server 读取client的metadata
+	md, ok := gm.FromIncomingContext(ctx)
+	log.Printf("md is %v ok %v", md, ok)
+
 	return out, nil
 }
 
